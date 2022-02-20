@@ -180,22 +180,25 @@ return new Symbol(sym.EOF);
 
 \"({STRING}|(\\{ESCAPE}))*(\n|eofval) {
             ErrMsg.fatal(yyline+1, CharNum.num, "ignoring unterminated string literal");
-            //CharNum.num = 1;
+            CharNum.num = 1;
           }
 
 \"({STRING}|(\\{ESCAPE})|(\\{BAD}))*\" {
             ErrMsg.fatal(yyline+1, CharNum.num, "ignoring string literal with bad escaped character");
+            CharNum.num = 1;
           }
 
 \"({STRING}|(\\{ESCAPE})|(\\{BAD}))* {
             ErrMsg.fatal(yyline+1, CharNum.num, "ignoring unterminated string literal with bad escaped character");
+            CharNum.num = 1;
           }
 
 \n        { CharNum.num = 1; }
 
 {WHITESPACE}+  { CharNum.num += yytext().length(); }
 
-//*       {}
+("//*"|"%"){STRING}* { CharNum.num = 1;}
+
 
 "+"       { Symbol S = new Symbol(sym.PLUS, new TokenVal(yyline+1, CharNum.num));
             CharNum.num++;
