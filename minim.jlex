@@ -180,8 +180,6 @@ return new Symbol(sym.EOF);
           }
 
 
-
-
 \n        { CharNum.num = 1; }
 
 {WHITESPACE}+  { CharNum.num += yytext().length(); }
