@@ -60,6 +60,7 @@ DIGIT=        [0-9]
 WHITESPACE=   [\040\t]
 LETTER=       [a-zA-Z]
 STRING=       [^\n\"\\]
+ESCAPE=       [n|t|'|?|\"|\\]
 %implements java_cup.runtime.Scanner
 %function next_token
 %type java_cup.runtime.Symbol
@@ -169,15 +170,20 @@ return new Symbol(sym.EOF);
 
 
 
-\"({STRING}|(\\n|\\\"|\\t|\\'|\\?|\\\\))*\" {
+\"({STRING}|(\\{ESCAPE}))*\" {
             String strVal = yytext();
             Symbol S = new Symbol(sym.STRINGLITERAL, new StrLitTokenVal(yyline+1, CharNum.num,strVal));
             CharNum.num += yytext().length();
             return S;
           }
 
-\"{STRING}* {
+\"({STRING}|(\\{ESCAPE}))*(\n|eofval) {
             ErrMsg.fatal(yyline+1, CharNum.num, "ignoring unterminated string literal");
+            //CharNum.num = 1;
+          }
+
+\"({STRING}|(\\{STRING}))*\" {
+            
           }
 
 \n        { CharNum.num = 1; }
