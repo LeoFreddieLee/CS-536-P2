@@ -60,7 +60,8 @@ DIGIT=        [0-9]
 WHITESPACE=   [\040\t]
 LETTER=       [a-zA-Z]
 STRING=       [^\n\"\\]
-ESCAPE=       [n|t|'|?|\"|\\]
+ESCAPE=       [nt'?\"\\]
+BAD=          [^nt'?\"\\]
 %implements java_cup.runtime.Scanner
 %function next_token
 %type java_cup.runtime.Symbol
@@ -182,8 +183,12 @@ return new Symbol(sym.EOF);
             //CharNum.num = 1;
           }
 
-\"({STRING}|(\\{STRING}))*\" {
-            
+\"({STRING}|(\\{ESCAPE})|(\\{BAD}))*\" {
+            ErrMsg.fatal(yyline+1, CharNum.num, "ignoring string literal with bad escaped character");
+          }
+
+\"({STRING}|(\\{ESCAPE})|(\\{BAD}))* {
+            ErrMsg.fatal(yyline+1, CharNum.num, "ignoring unterminated string literal with bad escaped character");
           }
 
 \n        { CharNum.num = 1; }
