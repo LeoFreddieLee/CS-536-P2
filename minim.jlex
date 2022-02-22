@@ -62,6 +62,7 @@ LETTER=       [a-zA-Z]
 STRING=       [^\n\"\\]
 ESCAPE=       [nt'?\"\\]
 BAD=          [^nt'?\"\\]
+NOTNL=         [^\n]
 %implements java_cup.runtime.Scanner
 %function next_token
 %type java_cup.runtime.Symbol
@@ -183,12 +184,12 @@ return new Symbol(sym.EOF);
             CharNum.num = 1;
           }
 
-\"({STRING}|\\{ESCAPE}|\\{BAD})*\\{BAD}+({STRING}|\\{ESCAPE}|\\{BAD})*\" {
+\"({STRING}|\\{ESCAPE})*(\\{BAD})+({STRING}|\\{ESCAPE}|\\{BAD})*{NOTNL}+\" {
             ErrMsg.fatal(yyline+1, CharNum.num, "ignoring string literal with bad escaped character");
             CharNum.num = 1;
           }
 
-\"({STRING}|\\{ESCAPE}|\\{BAD})*\\{BAD}+({STRING}|\\{ESCAPE}|\\{BAD})* {
+\"({STRING}|\\{ESCAPE})*(\\{BAD})+({STRING}|\\{ESCAPE}|\\{BAD})* {
             ErrMsg.fatal(yyline+1, CharNum.num, "ignoring unterminated string literal with bad escaped character");
             CharNum.num = 1;
           }

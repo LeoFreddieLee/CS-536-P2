@@ -10,5 +10,4 @@ adc
 "space \ is not"
 "bad escape \a and not terminate
 "very bad string \
-//* this is comment
-% me too!
+"bad escape \a \a and not terminate
