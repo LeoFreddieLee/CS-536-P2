@@ -62,7 +62,7 @@ LETTER=       [a-zA-Z]
 STRING=       [^\n\"\\]
 ESCAPE=       [nt'?\"\\]
 BAD=          [^nt'?\"\\]
-NOTNL=         [^\n]
+NOTNL=        [^\n]
 %implements java_cup.runtime.Scanner
 %function next_token
 %type java_cup.runtime.Symbol
