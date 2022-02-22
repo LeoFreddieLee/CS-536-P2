@@ -1,3 +1,15 @@
 2022
 +
 a
+adc
+"&!88"
+"use \n to"
+"use \" do \\"
+"unterminated
+"also \"
+"space \ is not"
+"bad escape \a and not terminate
+"bad escapes \a \a and not terminate
+"very bad string \
+//* this is comment
+% me too!
