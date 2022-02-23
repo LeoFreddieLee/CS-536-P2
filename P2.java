@@ -16,6 +16,14 @@ public class P2 {
         CharNum.num = 1;
     
         // ADD CALLS TO OTHER TEST METHODS HERE
+        testExcepts();
+	CharNum.num = 1;
+
+	testChars();
+	CharNum.num = 1;
+
+	testEOF();
+	CharNum.num = 1;
     }
 
     /**
@@ -175,4 +183,69 @@ public class P2 {
         } // end while
         outFile.close();
     }
+
+    private static void testEOF() throws IOException {
+        // open input and output files
+        FileReader inFile = null;
+        File outFile = null;
+        try {
+            inFile = new FileReader("eof.txt");
+	    //outFile = new File("eof.out");
+            PrintStream ps = new PrintStream(new FileOutputStream("eof.out"));
+            System.setErr(ps);
+        } catch (FileNotFoundException ex) {
+            System.err.println("File eof.txt not found.");
+            System.exit(-1);
+        }
+        // create and call the scanner
+        Yylex scanner = new Yylex(inFile);
+        Symbol token = scanner.next_token();
+	if(token.sym != sym.EOF) {token = scanner.next_token();}
+	//System.setErr(new PrintStream(OutputStream.nullOutputStream()));
+    }
+    
+    private static void testExcepts() throws IOException {
+        // open input and output files
+        FileReader inFile = null;
+        File outFile = null;
+        try {
+            inFile = new FileReader("exceptions.in");
+            outFile = new File("exceptions.out");
+	    PrintStream ps = new PrintStream(new FileOutputStream(outFile));
+	    System.setErr(ps);
+        } catch (FileNotFoundException ex) {
+            System.err.println("File exceptions.in not found.");
+            System.exit(-1);
+        }
+
+        // create and call the scanner
+        Yylex scanner = new Yylex(inFile);
+        Symbol token = scanner.next_token();
+	while(token.sym != sym.EOF) {
+	   token = scanner.next_token();
+	}
+	//System.setErr(ps);
+	//ps.close();
+	//System.setErr(new PrintStream(OutputStream.nullOutputStream()));
+    }
+
+    private static void testChars() throws IOException {
+        // open input and output files
+        FileReader inFile = null;
+        PrintWriter outFile = null;
+        try {
+            inFile = new FileReader("allTokens.in");
+            outFile = new PrintWriter(new FileWriter("eof.out"));
+        } catch (FileNotFoundException ex) {
+            System.err.println("File eof.txt not found.");
+            System.exit(-1);
+        } catch (IOException ex) {
+            System.err.println("eof.out cannot be opened.");
+            System.exit(-1);
+        }
+
+        // create and call the scanner
+        Yylex scanner = new Yylex(inFile);
+        Symbol token = scanner.next_token();
+    } 
 }

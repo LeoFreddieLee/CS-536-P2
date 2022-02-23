@@ -1,0 +1,6 @@
+"unterminated
+"also \"
+"space \ is not"
+"bad escape \a and not terminate
+"very bad string \
+"bad escape \a \a and not terminate
