@@ -170,8 +170,6 @@ return new Symbol(sym.EOF);
             return S;
           }
 
-
-
 \"({STRING}|(\\{ESCAPE}))*\" {
             String strVal = yytext();
             Symbol S = new Symbol(sym.STRINGLITERAL, new StrLitTokenVal(yyline+1, CharNum.num,strVal));
@@ -179,7 +177,7 @@ return new Symbol(sym.EOF);
             return S;
           }
 
-\"({STRING}|(\\{ESCAPE}))*(\n|eofval) {
+\"({STRING}|(\\{ESCAPE}))* {
             ErrMsg.fatal(yyline+1, CharNum.num, "ignoring unterminated string literal");
             CharNum.num = 1;
           }
@@ -216,7 +214,7 @@ return new Symbol(sym.EOF);
              return S;
           }
 
-"("       {  Symbol S = new Symbol(sym.RPAREN, new TokenVal(yyline+1, CharNum.num));
+")"       {  Symbol S = new Symbol(sym.RPAREN, new TokenVal(yyline+1, CharNum.num));
              CharNum.num++;
              return S;
           }
@@ -246,7 +244,7 @@ return new Symbol(sym.EOF);
              return S;
           }
           
-"++"       {  Symbol S = new Symbol(sym.PLUS, new TokenVal(yyline+1, CharNum.num));
+"++"       {  Symbol S = new Symbol(sym.PLUSPLUS, new TokenVal(yyline+1, CharNum.num));
              CharNum.num+=2;
              return S;
           }
