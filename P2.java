@@ -37,13 +37,15 @@ public class P2 {
         testAllTokens();
         CharNum.num = 1;
     
-        // ADD CALLS TO OTHER TEST METHODS HERE
+        // test all exceptions
         testExcepts();
 	CharNum.num = 1;
 
+	// test char num
 	testChars();
 	CharNum.num = 1;
 
+	// test eof
 	testEOF();
 	CharNum.num = 1;
     }
