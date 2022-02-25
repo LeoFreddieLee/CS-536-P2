@@ -210,7 +210,7 @@ return new Symbol(sym.EOF);
             return S;
           }
 
-\"({STRING}|(\\{ESCAPE}))*(\n|eofval) {
+\"({STRING}|(\\{ESCAPE}))* {
             ErrMsg.fatal(yyline+1, CharNum.num,
 			 "ignoring unterminated string literal");
             CharNum.num = 1;
