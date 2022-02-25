@@ -1,3 +1,24 @@
+###############################################################################
+##
+## Title:		Project2
+## File:		Makefile
+## 
+## Semester:		CS536 Spring 2022
+##
+## Author:		Yi Xiao
+## Email:		yxiao84@wisc.edu
+## CS Login:		yix
+## Lecturer's Name:	Beck Hasti
+##
+###############################################################################
+##
+## Pair Partner:	Qidong Li
+## Email:		yli994@wisc.edu
+## CS Login:		leofreddielee
+## Lecturer's Name:	Beck Hasti
+##
+###############################################################################
+
 ###
 # This Makefile can be used to make a scanner for the b language
 # (Yylex.class) and to make a program that tests the scanner (P2.class).
@@ -36,9 +57,10 @@ ErrMsg.class: ErrMsg.java
 # to expected results
 ###
 test:
-	java -cp $(CP) P2 
+	java -cp $(CP) P2
 	diff allTokens.in allTokens.out
-
+	diff exceptions.out exceptions.test
+	diff eof.out eof.test
 ###
 # clean up
 ###
@@ -48,3 +70,5 @@ clean:
 
 cleantest:
 	rm -f allTokens.out
+	rm -f exceptions.out
+	rm -f eof.out

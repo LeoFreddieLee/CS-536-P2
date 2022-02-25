@@ -1,6 +1,28 @@
+///////////////////////////////////////////////////////////////////////////////
+//		
+// Title:		Project2
+// Files:		P2.java, Makefile, allTokens.in, eof.test, minim.jlex
+// 			exceptions.in, sym.java
+// Semester:		CS536 Spring 2022
+//
+// Author:		Yi Xiao
+// Email:		yxiao84@wisc.edu  
+// CS Login: 		yix
+// Lecturer's Name:	Beck Hasti
+//
+///////////////////////////////////////////////////////////////////////////////
+//
+// Pair Partner:	Qidong Li
+// Email:		yli994@wisc.edu
+// CS Login:		leofreddielee
+// Lecturer's Name:	Beck Hasti
+//
+///////////////////////////////////////////////////////////////////////////////
+
 import java.util.*;
 import java.io.*;
 import java_cup.runtime.*;  // defines Symbol
+
 
 /**
  * This program is to be used to test the CSX scanner.
@@ -16,6 +38,14 @@ public class P2 {
         CharNum.num = 1;
     
         // ADD CALLS TO OTHER TEST METHODS HERE
+        testExcepts();
+	CharNum.num = 1;
+
+	testChars();
+	CharNum.num = 1;
+
+	testEOF();
+	CharNum.num = 1;
     }
 
     /**
@@ -175,4 +205,113 @@ public class P2 {
         } // end while
         outFile.close();
     }
+
+    /**
+     * testEOF
+     *
+     * Open and read from file eof.txt
+     * All tokens in eof.txt are ending with (eof)
+     * For each token read, write the corresponding string/error to eof.out
+     * If EOF works, an error with message "ignoring unterminated string
+     * literal" should be written to eof.out, we can verify the correctness
+     * of the scanner by comparing the output file (eof.out) with the answer
+     * file (eof.test).
+     */
+    private static void testEOF() throws IOException {
+        // open input and output files
+        FileReader inFile = null;
+        File outFile = null;
+        try {
+            inFile = new FileReader("eof.txt");
+	    //outFile = new File("eof.out");
+            PrintStream ps = new PrintStream(new FileOutputStream("eof.out"));
+            System.setErr(ps);
+        } catch (FileNotFoundException ex) {
+            System.err.println("File eof.txt not found.");
+            System.exit(-1);
+        }
+        // create and call the scanner
+        Yylex scanner = new Yylex(inFile);
+        Symbol token = scanner.next_token();
+	if(token.sym != sym.EOF) {token = scanner.next_token();}
+	//System.setErr(new PrintStream(OutputStream.nullOutputStream()));
+    }
+    
+    /**
+     * testExcepts
+     * 
+     * Open and read from file exceptions.in
+     * For each token read, write the corresponding string/errors to 
+     * exceptions.out
+     * If the input file contains all illegal tokens(strings), one per line,
+     * we can verify the correctness of the scanner by comparing the output
+     * file (expection.out) and the answer file (exception.test).
+     */
+    private static void testExcepts() throws IOException {
+        // open input and output files
+        FileReader inFile = null;
+        File outFile = null;
+        try {
+            inFile = new FileReader("exceptions.in");
+            outFile = new File("exceptions.out");
+	    PrintStream ps = new PrintStream(new FileOutputStream(outFile));
+	    System.setErr(ps);
+        } catch (FileNotFoundException ex) {
+            System.err.println("File exceptions.in not found.");
+            System.exit(-1);
+        }
+
+        // create and call the scanner
+        Yylex scanner = new Yylex(inFile);
+        Symbol token = scanner.next_token();
+	while(token.sym != sym.EOF) {
+	   token = scanner.next_token();
+	}
+	//System.setErr(ps);
+	//ps.close();
+	//System.setErr(new PrintStream(OutputStream.nullOutputStream()));
+    }
+
+    /**
+     * testChars
+     *
+     * Open and read from file allTokens.in
+     * Test whether the CharNum is correct after reading each token.
+     */
+    private static void testChars() throws IOException {
+        // open input and output files
+        FileReader inFile = null;
+        PrintWriter outFile = null;
+        try {
+            inFile = new FileReader("allTokens.in");
+            outFile = new PrintWriter(new FileWriter("eof.out"));
+        } catch (FileNotFoundException ex) {
+            System.err.println("File allTokens.in not found.");
+            System.exit(-1);
+        } catch (IOException ex) {
+            System.err.println("eof.out cannot be opened.");
+            System.exit(-1);
+        }
+
+        // create and call the scanner
+        Yylex scanner = new Yylex(inFile);
+        Symbol token = scanner.next_token();
+	
+	// use an array to denote all the supposed CharNum after
+	// reading each token in allTokens.in 
+	int[] correctArr = new int[]{5,5,4,5,6,7,6,5,3,5,6,7,5,2,2,4,3,7,12,15,
+		2,2,2,2,2,2,2,3,3,3,3,2,2,2,2,2,3,3,3,3,2,2,3,3,2};
+	int i = 0;
+	// compare the CharNum.num with the supposed char num in correctArr
+	while(token.sym != sym.EOF){
+	   if (CharNum.num != correctArr[i]){
+	      // print out error messages if the CharNum.num is wrong
+	      System.out.println("the char num is not correct, actual: " +
+			      CharNum.num +   " right: " + correctArr[i]);
+	   }
+	   // assign token to next token
+	   token = scanner.next_token();
+	   i++;
+	}
+    } 
 }
